@@ -1,0 +1,215 @@
+/* Styling for the criteria manager page */
+
+.wrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.controls > div {
+  flex: 1;
+  min-width: 200px;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.message {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.textarea {
+  width: 100%;
+  height: 300px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  box-sizing: border-box;
+}
+
+/* New styles for editable criteria */
+.categoryCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fdfdfd;
+}
+
+.categoryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.subcategoryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.addSubButton,
+.addCategoryButton {
+  margin-top: 0.5rem;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addSubButton:hover,
+.addCategoryButton:hover {
+  background-color: #218838;
+}
+
+/* Styles for conditional group rows */
+.groupRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.addGroupButton {
+  margin-top: 0.5rem;
+  background-color: #17a2b8;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addGroupButton:hover {
+  background-color: #138496;
+}
+
+
+.listItem {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background-color: #f9f9f9;
+}
+
+.listRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.itemTitle {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.itemInfo {
+  color: #555;
+  margin-right: 0.5rem;
+}
+
+.smallButton {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+
+.smallButton:hover {
+  background-color: #0069d9;
+}
+
+.editPanel {
+  margin-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 0.5rem;
+}
+
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.editRow label {
+  min-width: 120px;
+  font-weight: 500;
+}
+
+.subEditorSection {
+  margin-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 0.5rem;
+}
+
+.subEditorRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.cancelButton {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #c82333;
+}

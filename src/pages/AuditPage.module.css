@@ -1,0 +1,33 @@
+
+.wrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.controls > div {
+  flex: 1;
+  min-width: 200px;
+}
+
+.results {
+  margin-top: 2rem;
+}
+
+.successRow {
+  background-color: #e0ffe0;
+}
+
+.failRow {
+  background-color: #ffe0e0;
+}
