@@ -17,7 +17,7 @@ export async function login(email: string, password: string) {
   return res.data;
 }
 export async function signup(email: string, password: string, name?: string) {
-  const res = await axios.post(`${API_BASE}/auth/signup`, { email, password });
+  const res = await axios.post(`${API_BASE}/auth/signup`, { email, password , name});
   return res.data;
 }
 
