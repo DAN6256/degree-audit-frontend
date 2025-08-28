@@ -4,12 +4,12 @@ import { useAuth } from '../hooks/useAuth';
 import { getSemesterData, saveSemesterData } from '../api';
 import { SemesterData, Slot, Rule } from '../types';
 import { nanoid } from 'nanoid';
+import './ProgramCriteria.css';
 
 const SEMESTERS = ['Y1S1','Y1S2','Y2S1','Y2S2','Y3S1','Y3S2','Y4S1','Y4S2'];
-
 const YEAR_OPTIONS = Array.from({ length: 8 }, (_, i) => 2025 + i);
 
-//We can make this dynamic later
+// We can make this dynamic later
 const PROGRAM_OPTIONS = [
   'B.Sc - Computer Engineering',
   'B.Sc - Mechanical Engineering',
@@ -76,7 +76,6 @@ const ProgramCriteria: React.FC = () => {
     return `Program Criteria — ${yg}${pr}${sm}`;
   }, [program, yearGroup, semester]);
 
-  
   const load = async (fromProgram?: string | null) => {
     if (!token || !program.trim() || !semester || !Number.isFinite(yearGroup)) {
       setData({ slots: [], rules: [] });
@@ -87,7 +86,6 @@ const ProgramCriteria: React.FC = () => {
     setLoading(true);
     setMsg('');
     try {
-      
       const current = await getSemesterData(token, yearGroup, program.trim(), semester);
       if (hasContent(current)) {
         setData(deepCloneData(current));
@@ -138,7 +136,6 @@ const ProgramCriteria: React.FC = () => {
   }, []);
 
   useEffect(() => { load(undefined);  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => { load(undefined); }, [yearGroup, semester]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -214,41 +211,40 @@ const ProgramCriteria: React.FC = () => {
     }
   };
 
+  const AddButtons = () => (
+    <>
+      <button className="btn btnChip" onClick={addRequired}>Add Required</button>
+      <button className="btn btnChip" onClick={() => addElective('Major Elective', 10)}>Add Major Elective</button>
+      <button className="btn btnChip" onClick={() => addElective('Non-Major Elective', 20)}>Add Non-Major Elective</button>
+      <button className="btn btnChip" onClick={() => addElective('Africana Elective', 30)}>Add Africana Elective</button>
+      <button className="btn btnChip" onClick={() => addElective('Elective', 50)}>Add Elective</button>
+    </>
+  );
+
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>{title}</h2>
+    <div className="pcContainer">
+      <h2 className="pcTitle">{title}</h2>
 
-      {msg && (
-        <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', padding: 10, borderRadius: 8, marginBottom: 12 }}>
-          {msg}
-        </div>
-      )}
+      {msg && <div className="pcMsg">{msg}</div>}
 
-      
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr 1fr auto',
-          gap: 12,
-          alignItems: 'end',
-          marginBottom: 12,
-        }}
-      >
-        <div>
-          <label style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>Year Group</label>
-          <select value={yearGroup} onChange={(e) => setYearGroup(parseInt(e.target.value, 10))}>
+      <div className="controlsGrid">
+        <div className="controlGroup">
+          <label className="fieldLabel">Year Group</label>
+          <select
+            className="selectInput"
+            value={yearGroup}
+            onChange={(e) => setYearGroup(parseInt(e.target.value, 10))}
+          >
             {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
           </select>
         </div>
 
-        <div>
-          <label style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>
-            Program (must match Excel “Program”)
-          </label>
+        <div className="controlGroup">
+          <label className="fieldLabel">Program (must match Excel “Program”)</label>
           <select
+            className="selectInput"
             value={program}
             onChange={(e) => setProgram(e.target.value)}
-            style={{ width: '100%', padding: 6 }}
           >
             {PROGRAM_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -256,83 +252,111 @@ const ProgramCriteria: React.FC = () => {
           </select>
         </div>
 
-        <div>
-          <label style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>Semester</label>
-          <select value={semester} onChange={(e) => setSemester(e.target.value)}>
+        <div className="controlGroup">
+          <label className="fieldLabel">Semester</label>
+          <select
+            className="selectInput"
+            value={semester}
+            onChange={(e) => setSemester(e.target.value)}
+          >
             {SEMESTERS.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
 
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={() => load(undefined)} disabled={loading}>Reload</button>
-          <button onClick={save} disabled={loading || !token || !program.trim()}>Save</button>
+        <div className="controlsActions">
+          <button className="btn btnSecondary" onClick={() => load(undefined)} disabled={loading}>
+            {loading ? 'Loading…' : 'Reload'}
+          </button>
+          <button className="btn btnPrimary" onClick={save} disabled={loading || !token || !program.trim()}>
+            Save
+          </button>
         </div>
       </div>
 
       {/* Slots */}
-      <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12, marginBottom: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Slots</h3>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
-          <button onClick={addRequired}>Add Required</button>
-          <button onClick={() => addElective('Major Elective', 10)}>Add Major Elective</button>
-          <button onClick={() => addElective('Non-Major Elective', 20)}>Add Non-Major Elective</button>
-          <button onClick={() => addElective('Africana Elective', 30)}>Add Africana Elective</button>
-          <button onClick={() => addElective('Elective', 50)}>Add Elective</button>
+      <section className="section">
+        <div className="sectionHeader">
+          <h3 className="sectionTitle">Slots</h3>
+
+          {/* Show add buttons at the TOP only when there are NO slots yet */}
+          {data.slots.length === 0 && (
+            <div className="toolbar">
+              <AddButtons />
+            </div>
+          )}
         </div>
 
-        {data.slots.length === 0 && <div style={{ color: '#6b7280' }}>No slots yet.</div>}
+        {data.slots.length === 0 && <div className="emptyText">No slots yet.</div>}
 
         {data.slots.map(s => (
-          <div key={s.id} style={{ border: "1px solid #e5e7eb", borderRadius: 8, padding: 8, marginBottom: 8 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6,1fr)', gap: 8 }}>
-              <div>
-                <label>Title</label>
-                <input value={s.title} onChange={(e) => updateSlot(s.id, { title: e.target.value })} />
+          <div key={s.id} className="slotCard">
+            <div className="slotGrid">
+              <div className="field">
+                <label className="fieldLabel">Title</label>
+                <input
+                  className="textInput"
+                  value={s.title}
+                  onChange={(e) => updateSlot(s.id, { title: e.target.value })}
+                />
               </div>
-              <div>
-                <label>Kind</label>
-                <select value={s.kind} onChange={(e) => updateSlot(s.id, { kind: e.target.value as any })}>
+              <div className="field">
+                <label className="fieldLabel">Kind</label>
+                <select
+                  className="selectInput"
+                  value={s.kind}
+                  onChange={(e) => updateSlot(s.id, { kind: e.target.value as any })}
+                >
                   <option value="required">required</option>
                   <option value="elective">elective</option>
                 </select>
               </div>
-              <div>
-                <label>Min Grade</label>
-                <select value={s.minGrade || 'D'} onChange={(e) => updateSlot(s.id, { minGrade: e.target.value })}>
+              <div className="field">
+                <label className="fieldLabel">Min Grade</label>
+                <select
+                  className="selectInput"
+                  value={s.minGrade || 'D'}
+                  onChange={(e) => updateSlot(s.id, { minGrade: e.target.value })}
+                >
                   {['A+','A','B+','B','C+','C','D+','D','E','P'].map(g => <option key={g} value={g}>{g}</option>)}
                 </select>
               </div>
-              <div>
-                <label>Priority</label>
+              <div className="field">
+                <label className="fieldLabel">Priority</label>
                 <input
+                  className="textInput"
                   type="number"
                   value={s.priority ?? (s.kind === 'required' ? 0 : 50)}
                   onChange={(e) => updateSlot(s.id, { priority: parseInt(e.target.value, 10) })}
                 />
               </div>
-              <div>
-                <label>Tag</label>
-                <input value={s.tag || ''} onChange={(e) => updateSlot(s.id, { tag: e.target.value })} />
+              <div className="field">
+                <label className="fieldLabel">Tag</label>
+                <input
+                  className="textInput"
+                  value={s.tag || ''}
+                  onChange={(e) => updateSlot(s.id, { tag: e.target.value })}
+                />
               </div>
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <button onClick={() => removeSlot(s.id)}>Delete Slot</button>
+              <div className="field fieldActions">
+                <button className="btn btnDanger btnSmall" onClick={() => removeSlot(s.id)}>Delete Slot</button>
               </div>
             </div>
 
             {s.kind === 'required' ? (
-              <div style={{ marginTop: 8 }}>
-                <label>Course Name</label>
+              <div className="fieldRow">
+                <label className="fieldLabel">Course Name</label>
                 <input
+                  className="textInput"
                   value={s.courseName || ''}
                   onChange={(e) => updateSlot(s.id, { courseName: e.target.value })}
                   placeholder='e.g., "Circuits and Electronics"'
-                  style={{ width: '100%' }}
                 />
               </div>
             ) : (
-              <div style={{ marginTop: 8 }}>
-                <label>Allowed Courses (comma-separated; ONE will satisfy this slot)</label>
+              <div className="fieldRow">
+                <label className="fieldLabel">Allowed Courses (comma-separated; ONE will satisfy this slot)</label>
                 <input
+                  className="textInput"
                   value={(s.allowedCourses || []).join(', ')}
                   onChange={(e) =>
                     updateSlot(s.id, {
@@ -340,41 +364,53 @@ const ProgramCriteria: React.FC = () => {
                     })
                   }
                   placeholder='e.g., "Embedded Systems, Digital Control, ..."'
-                  style={{ width: '100%' }}
                 />
               </div>
             )}
           </div>
         ))}
-      </div>
+
+        {/* Add buttons at the BOTTOM when there ARE slots */}
+        {data.slots.length > 0 && (
+          <div className="toolbar toolbarBottom">
+            <AddButtons />
+          </div>
+        )}
+      </section>
 
       {/* Rules */}
-      <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12, marginBottom: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Rules (Math Tracks, Waivers, Adds)</h3>
-        <button onClick={addRule}>Add Rule</button>
-        {data.rules.length === 0 && <div style={{ marginTop: 8, color: '#6b7280' }}>No rules.</div>}
+      <section className="section">
+        <div className="sectionHeader">
+          <h3 className="sectionTitle">Rules (Math Tracks, Waivers, Adds)</h3>
+          <div className="toolbar">
+            <button className="btn btnChip" onClick={addRule}>Add Rule</button>
+          </div>
+        </div>
+
+        {data.rules.length === 0 && <div className="emptyText">No rules.</div>}
 
         {data.rules.map(r => (
-          <div key={r.id} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 8, marginTop: 8 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8 }}>
-              <div>
-                <label>Name</label>
+          <div key={r.id} className="ruleCard">
+            <div className="ruleHeaderGrid">
+              <div className="field">
+                <label className="fieldLabel">Name</label>
                 <input
+                  className="textInput"
                   value={r.name}
                   onChange={(e) => updateRule(r.id, { name: e.target.value })}
                   placeholder="e.g., 'If Calculus I passed → require Calculus II; waive Applied Calculus'"
-                  style={{ width: '100%' }}
                 />
               </div>
-              <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <button onClick={() => removeRule(r.id)}>Delete Rule</button>
+              <div className="field fieldActions">
+                <button className="btn btnDanger btnSmall" onClick={() => removeRule(r.id)}>Delete Rule</button>
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 8 }}>
-              <div>
-                <label>When: anyPassed (comma list)</label>
+            <div className="twoColGrid">
+              <div className="field">
+                <label className="fieldLabel">When: anyPassed (comma list)</label>
                 <input
+                  className="textInput"
                   value={(r.when?.anyPassed || []).join(', ')}
                   onChange={(e) =>
                     updateRule(r.id, {
@@ -383,9 +419,10 @@ const ProgramCriteria: React.FC = () => {
                   }
                 />
               </div>
-              <div>
-                <label>When: allPassed (comma list)</label>
+              <div className="field">
+                <label className="fieldLabel">When: allPassed (comma list)</label>
                 <input
+                  className="textInput"
                   value={(r.when?.allPassed || []).join(', ')}
                   onChange={(e) =>
                     updateRule(r.id, {
@@ -396,10 +433,11 @@ const ProgramCriteria: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 8 }}>
-              <div>
-                <label>Then: waiveSlotsByTitle (comma list)</label>
+            <div className="twoColGrid">
+              <div className="field">
+                <label className="fieldLabel">Then: waiveSlotsByTitle (comma list)</label>
                 <input
+                  className="textInput"
                   value={(r.then?.waiveSlotsByTitle || []).join(', ')}
                   onChange={(e) =>
                     updateRule(r.id, {
@@ -408,9 +446,10 @@ const ProgramCriteria: React.FC = () => {
                   }
                 />
               </div>
-              <div>
-                <label>Then: waiveCourses (rare) (comma list)</label>
+              <div className="field">
+                <label className="fieldLabel">Then: waiveCourses (rare) (comma list)</label>
                 <input
+                  className="textInput"
                   value={(r.then?.waiveCourses || []).join(', ')}
                   onChange={(e) =>
                     updateRule(r.id, {
@@ -421,11 +460,11 @@ const ProgramCriteria: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ marginTop: 8 }}>
+            <div className="jsonBlock">
               <details>
-                <summary style={{ cursor: 'pointer' }}>Then: addSlots (inline JSON)</summary>
+                <summary className="jsonSummary">Then: addSlots (inline JSON)</summary>
                 <textarea
-                  style={{ width: '100%', minHeight: 140, fontFamily: 'monospace' }}
+                  className="jsonArea"
                   value={JSON.stringify(r.then?.addSlots || [], null, 2)}
                   onChange={(e) => {
                     try {
@@ -436,14 +475,14 @@ const ProgramCriteria: React.FC = () => {
                     }
                   }}
                 />
-                <div style={{ color: '#6b7280', fontSize: 12, marginTop: 4 }}>
+                <div className="hint">
                   Use Slot objects: id/title/kind/courseName/allowedCourses/minGrade/priority/tag.
                 </div>
               </details>
             </div>
           </div>
         ))}
-      </div>
+      </section>
     </div>
   );
 };
