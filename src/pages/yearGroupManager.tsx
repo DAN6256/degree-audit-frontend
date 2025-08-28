@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { listYearGroups, upsertYearGroup, listPrograms, upsertProgram } from '../api';
 import { ProgramMeta, YearGroupSummary } from '../types';
 import { Link } from 'react-router-dom';
+import './YearGroupManager.css';
 
 const YearGroupManager: React.FC = () => {
   const { token } = useAuth();
@@ -71,35 +72,33 @@ const YearGroupManager: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '1rem' }}>
-      <h2>Year Groups & Programs</h2>
+    <div className="ygContainer">
+      <h2 className="ygTitle">Year Groups & Programs</h2>
 
-      {msg && (
-        <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', padding: 8, borderRadius: 6, marginBottom: 12 }}>
-          {msg}
-        </div>
-      )}
+      {msg && <div className="ygMsg">{msg}</div>}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 16 }}>
-        <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12 }}>
-          <h3 style={{ marginTop: 0 }}>Year Groups</h3>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-            <input type="number" value={ygInput} onChange={(e) => setYgInput(parseInt(e.target.value, 10))}
-              placeholder="e.g., 2026" />
-            <button onClick={handleCreateYG}>Save Year Group</button>
+      <div className="ygGrid">
+        {/* Left: Year groups */}
+        <div className="panel">
+          <h3 className="panelTitle">Year Groups</h3>
+
+          <div className="inlineForm">
+            <input
+              className="textInput"
+              type="number"
+              value={ygInput}
+              onChange={(e) => setYgInput(parseInt(e.target.value, 10))}
+              placeholder="e.g., 2026"
+            />
+            <button className="btn btnPrimary" onClick={handleCreateYG}>Save Year Group</button>
           </div>
-          <ul>
+
+          <ul className="ygList">
             {items.map(i => (
-              <li key={i.yearGroup} style={{ marginBottom: 6 }}>
+              <li key={i.yearGroup} className="ygListItem">
                 <button
+                  className={`ygChip ${selectedYG === i.yearGroup ? 'isActive' : ''}`}
                   onClick={() => setSelectedYG(i.yearGroup)}
-                  style={{
-                    padding: '4px 8px',
-                    borderRadius: 6,
-                    border: '1px solid #e5e7eb',
-                    background: selectedYG === i.yearGroup ? '#eef2ff' : 'white',
-                    cursor: 'pointer'
-                  }}
                 >
                   {i.yearGroup}
                 </button>
@@ -108,49 +107,66 @@ const YearGroupManager: React.FC = () => {
           </ul>
         </div>
 
-        <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 12 }}>
-          <h3 style={{ marginTop: 0 }}>
+        {/* Right: Programs */}
+        <div className="panel">
+          <h3 className="panelTitle">
             Programs {selectedItem ? `for ${selectedItem.yearGroup}` : ''}
           </h3>
 
           {selectedYG != null && (
             <>
-              <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <div className="inlineForm">
                 <input
+                  className="textInput grow"
                   type="text"
                   placeholder="Program display name (must match Excel Program)"
                   value={progName}
                   onChange={(e) => setProgName(e.target.value)}
-                  style={{ flex: 1 }}
                 />
-                <select value={progPass} onChange={(e) => setProgPass(e.target.value)}>
-                  {['A+','A','B+','B','C+','C','D+','D','E'].map(g => <option key={g} value={g}>{g}</option>)}
+                <select
+                  className="selectInput"
+                  value={progPass}
+                  onChange={(e) => setProgPass(e.target.value)}
+                >
+                  {['A+','A','B+','B','C+','C','D+','D','E'].map(g => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
                 </select>
-                <button onClick={handleAddProgram}>Add Program</button>
+                <button className="btn btnSecondary" onClick={handleAddProgram}>Add Program</button>
               </div>
 
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ background: '#f3f4f6' }}>
-                    <th style={th}>Program</th>
-                    <th style={th}>Default Pass</th>
-                    <th style={th}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {programs.map(p => (
-                    <tr key={p.displayName}>
-                      <td style={td}>{p.displayName}</td>
-                      <td style={td}>{p.defaultPassGrade || 'D'}</td>
-                      <td style={td}>
-                        <Link to={`/criteria?yearGroup=${selectedYG}&program=${encodeURIComponent(p.displayName)}`}>
-                          Open Criteria
-                        </Link>
-                      </td>
+              <div className="tableWrap">
+                <table className="ygTable">
+                  <thead>
+                    <tr>
+                      <th className="th">Program</th>
+                      <th className="th">Default Pass</th>
+                      <th className="th">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {programs.map(p => (
+                      <tr key={p.displayName}>
+                        <td className="td">{p.displayName}</td>
+                        <td className="td">{p.defaultPassGrade || 'D'}</td>
+                        <td className="td">
+                          <Link
+                            className="tableLink"
+                            to={`/criteria?yearGroup=${selectedYG}&program=${encodeURIComponent(p.displayName)}`}
+                          >
+                            Open Criteria
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                    {programs.length === 0 && (
+                      <tr>
+                        <td className="td tdEmpty" colSpan={3}>No programs yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </>
           )}
         </div>
@@ -158,8 +174,5 @@ const YearGroupManager: React.FC = () => {
     </div>
   );
 };
-
-const th: React.CSSProperties = { textAlign: 'left', padding: 8, borderBottom: '1px solid #e5e7eb' };
-const td: React.CSSProperties = { padding: 8, borderBottom: '1px solid #f3f4f6' };
 
 export default YearGroupManager;
