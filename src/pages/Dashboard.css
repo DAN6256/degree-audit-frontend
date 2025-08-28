@@ -1,0 +1,164 @@
+.dashboardContainer {
+  min-height: 100dvh;
+  padding: clamp(16px, 2vw, 24px);
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+/* Top bar with compact spacing */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto clamp(16px, 2.5vh, 24px);
+}
+
+.header {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.1;
+  font-size: clamp(20px, 2.2vw, 28px);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Primary action – small, tidy, and accessible */
+.logoutButton {
+  appearance: none;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: #fff;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.08);
+}
+
+.logoutButton:active {
+  transform: translateY(0.5px);
+}
+
+.logoutButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+/* Card grid – responsive and compact */
+.cardsContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(12px, 2vw, 18px);
+}
+
+/* Make cards real buttons for a11y, but style like cards */
+.card {
+  appearance: none;
+  background: #ffffff;
+  color: inherit;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  padding: 16px;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.card:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Small icon chip */
+.cardIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: radial-gradient(120% 120% at 10% 10%, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.12));
+  color: #4f46e5;
+  margin-bottom: 8px;
+}
+
+.iconSvg {
+  width: 22px;
+  height: 22px;
+}
+
+.cardTitle {
+  margin: 2px 0 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cardDesc {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: #475569;
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .logoutButton {
+    transition: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .dashboardContainer {
+    background: linear-gradient(135deg, #0b1020 0%, #0e1324 100%);
+  }
+  .logoutButton {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-color: rgba(226, 232, 240, 0.15);
+  }
+  .logoutButton:hover {
+    border-color: rgba(165, 180, 252, 0.5);
+    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.6);
+  }
+  .card {
+    background: #0f172a;
+    border-color: rgba(226, 232, 240, 0.08);
+    box-shadow: 0 6px 16px rgba(2, 6, 23, 0.6);
+  }
+  .card:hover,
+  .card:focus-visible {
+    border-color: rgba(165, 180, 252, 0.28);
+  }
+  .cardTitle {
+    color: #e5e7eb;
+  }
+  .cardDesc {
+    color: #cbd5e1;
+  }
+  .cardIcon {
+    background: radial-gradient(120% 120% at 10% 10%, rgba(99, 102, 241, 0.18), rgba(139, 92, 246, 0.18));
+    color: #a5b4fc;
+  }
+}
